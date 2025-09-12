@@ -1,4 +1,7 @@
 ﻿Imports System.IO
+Imports System.Text.Json
+Imports ProtoBuf
+Imports ZstdSharp
 
 Public Module Ldiff处理
     Public Function 生成HdiffMap(清单 As ManifestProto, chunk名称列表 As List(Of String)) As HDiffMap
@@ -73,5 +76,69 @@ Public Module Ldiff处理
 
         Directory.CreateDirectory(Path.GetDirectoryName(输出路径))
         复制文件段(ldiff文件路径, 输出路径, 数据.HdiffFileInChunkOffset, 数据.HdiffFileSize)
+    End Sub
+
+    Public Sub Ldiff转换(日志回调 As Action(Of String), ldiff路径 As String, hdiff输出路径 As String, 删除Ldiff As Boolean)
+        Dim ldiff目录路径 As String = Path.Combine(ldiff路径, "ldiff")
+        Dim 清单文件路径 As String = Path.Combine(ldiff路径, "manifest")
+
+        日志回调("读取清单文件...")
+        Dim 压缩数据 As Byte() = File.ReadAllBytes(清单文件路径)
+        Dim 解压缩数据 As Byte()
+        Using 解压缩器 As New Decompressor()
+            解压缩数据 = 解压缩器.Unwrap(压缩数据).ToArray()
+        End Using
+
+        Dim 清单Proto As ManifestProto
+        Using ms As New MemoryStream(解压缩数据)
+            清单Proto = Serializer.Deserialize(Of ManifestProto)(ms)
+        End Using
+
+        Dim ldiff文件列表 As String() = Directory.GetFiles(ldiff目录路径)
+        日志回调($"找到 {ldiff文件列表.Length} 个ldiff文件")
+
+        日志回调("开始转换ldiff文件...")
+        Dim 已处理数量 As Integer = 0
+        For Each 当前Ldiff文件 In ldiff文件列表
+            Dim asset名称 As String = Path.GetFileName(当前Ldiff文件)
+
+            Dim 匹配的Assets列表 As New List(Of (AssetName As String, AssetSize As Long, Asset As AssetManifest))
+            For Each assets组 In 清单Proto.Assets
+                If assets组.AssetData IsNot Nothing Then
+                    For Each assets In assets组.AssetData.Assets
+                        If assets.ChunkFileName = asset名称 Then
+                            匹配的Assets列表.Add((assets组.AssetName, assets组.AssetSize, assets))
+                        End If
+                    Next
+                End If
+            Next
+
+            For Each 当前匹配 In 匹配的Assets列表
+                Try
+                    提取Ldiff文件(当前匹配.Asset, 当前匹配.AssetName, 当前匹配.AssetSize, ldiff目录路径, hdiff输出路径)
+                    已处理数量 += 1
+                Catch ex As Exception
+                    日志回调($"处理 {当前匹配.AssetName} 时出错: {ex.Message}")
+                End Try
+            Next
+        Next
+        日志回调($"已转换 {已处理数量} 个文件")
+
+        日志回调("生成 hdiffMap ...")
+        Dim 差异映射名称列表 As New List(Of String)(ldiff文件列表.Length)
+        For Each 当前条目 In ldiff文件列表
+            差异映射名称列表.Add(Path.GetFileName(当前条目))
+        Next
+
+        Dim 映射 As HDiffMap = 生成HdiffMap(清单Proto, 差异映射名称列表)
+        Dim 映射JSON As String = JsonSerializer.Serialize(映射, New JsonSerializerOptions With {.WriteIndented = True})
+        Dim 映射JSON路径 As String = Path.Combine(hdiff输出路径, "hdiffmap.json")
+        File.WriteAllText(映射JSON路径, 映射JSON)
+
+        If 删除Ldiff Then
+            Directory.Delete(ldiff路径, True)
+        End If
+
+        日志回调("Ldiff 转换已完成")
     End Sub
 End Module

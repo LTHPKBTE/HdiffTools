@@ -124,6 +124,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="压缩处理器.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +150,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="差分包制作.vb" />
+    <Compile Include="差分包合并.vb" />
     <Compile Include="自动调整控件大小.vb" />
   </ItemGroup>
   <ItemGroup>
