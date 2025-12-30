@@ -21,10 +21,10 @@ jobs:
       uses: NuGet/setup-nuget@v2
 
     - name: Restore NuGet packages
-      run: nuget restore HdiffTools.vbproj
+      run: nuget restore HdiffTools.sln
 
     - name: Build the application
-      run: msbuild HdiffTools.vbproj /p:Configuration=Release
+      run: msbuild HdiffTools.sln /p:Configuration=Release
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
