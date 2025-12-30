@@ -1,12 +1,12 @@
 # HdiffTools
 
-»ùÓÚ [HdiffPatch](https://github.com/sisong/HDiffPatch) µÄ²î·Ö°ü´¦Àí¹¤¾ß£¬Ö§³Ö ºÏ²¢²î·Ö°ü ºÍ ÖÆ×÷²î·Ö°ü ¹¦ÄÜ¡£
+åŸºäºŽ [HdiffPatch](https://github.com/sisong/HDiffPatch) çš„å·®åˆ†åŒ…å¤„ç†å·¥å…·ï¼Œæ”¯æŒ åˆå¹¶å·®åˆ†åŒ… å’Œ åˆ¶ä½œå·®åˆ†åŒ… åŠŸèƒ½ã€‚
 
 ---
 
-### ¹¦ÄÜÌØÐÔ
-- ºÏ²¢²î·Ö°ü 
-- ÖÆ×÷²î·Ö°ü
+### åŠŸèƒ½ç‰¹æ€§
+- åˆå¹¶å·®åˆ†åŒ… 
+- åˆ¶ä½œå·®åˆ†åŒ…
 
-### ÔËÐÐ»·¾³
+### è¿è¡ŒçŽ¯å¢ƒ
 * [.NET Framework 4.8](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/net48)
