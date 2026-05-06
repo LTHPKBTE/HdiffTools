@@ -135,8 +135,23 @@ Public Class 差分包合并
                     Dim hdiff文件 As String = Path.Combine(差分包目录, remoteName & ".hdiff")
                     Dim 目标文件 As String = Path.Combine(临时目录, baseName)
 
+                    If Not File.Exists(hdiff文件) Then
+                        日志回调("警告：找不到hdiff文件：" & hdiff文件)
+                        Continue For
+                    End If
+
+                    If Not File.Exists(源文件) Then
+                        日志回调("警告：找不到源文件：" & 源文件)
+                        Continue For
+                    End If
+
                     Dim cmd As String = $"""{hpatchzExe}"" ""{源文件}"" ""{hdiff文件}"" ""{目标文件}"""
                     执行命令回调(cmd)
+
+                    If Not File.Exists(目标文件) Then
+                        日志回调("警告：hpatchz 未能生成目标文件：" & 目标文件)
+                        Continue For
+                    End If
 
                     If File.Exists(源文件) Then File.Delete(源文件)
                     If File.Exists(hdiff文件) Then File.Delete(hdiff文件)
