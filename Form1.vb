@@ -63,10 +63,6 @@ Public Class Form1
         Else
             Return InputBox(提示信息, 标题)
         End If
-
-        If p.ExitCode <> 0 Then
-            Throw New Exception($"命令执行失败(退出码: {p.ExitCode})")
-        End If
     End Function
 
     Private Sub 执行CMD(cmd As String)
