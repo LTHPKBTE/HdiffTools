@@ -173,34 +173,28 @@ Public Class Form1
             If Not 差分包是否压缩包 Then
                 If File.Exists(Path.Combine(合并参数.差分包路径, "manifest")) Then
                     合并参数.Ldiff差分包 = True
+                ElseIf File.Exists(Path.Combine(合并参数.差分包路径, "hdifffiles.txt")) Then
+                    合并参数.V2差分包 = False
+                ElseIf File.Exists(Path.Combine(合并参数.差分包路径, "hdiffmap.json")) Then
+                    合并参数.V2差分包 = True
+                ElseIf File.Exists(Path.Combine(合并参数.差分包路径, "deletefiles.txt")) Then
+                    合并参数.V2差分包 = False
                 Else
-                    If Not File.Exists(Path.Combine(合并参数.差分包路径, "deletefiles.txt")) Then
-                        显示消息框("差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return False
-                    ElseIf File.Exists(Path.Combine(合并参数.差分包路径, "hdifffiles.txt")) Then
-                        合并参数.V2差分包 = False
-                    ElseIf File.Exists(Path.Combine(合并参数.差分包路径, "hdiffmap.json")) Then
-                        合并参数.V2差分包 = True
-                    Else
-                        显示消息框("差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return False
-                    End If
+                    显示消息框("差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
                 End If
             Else
                 If 压缩器.检查压缩包中的文件(合并参数.差分包路径, "manifest") Then
                     合并参数.Ldiff差分包 = True
+                ElseIf 压缩器.检查压缩包中的文件(合并参数.差分包路径, "hdifffiles.txt") Then
+                    合并参数.V2差分包 = False
+                ElseIf 压缩器.检查压缩包中的文件(合并参数.差分包路径, "hdiffmap.json") Then
+                    合并参数.V2差分包 = True
+                ElseIf 压缩器.检查压缩包中的文件(合并参数.差分包路径, "deletefiles.txt") Then
+                    合并参数.V2差分包 = False
                 Else
-                    If Not 压缩器.检查压缩包中的文件(合并参数.差分包路径, "deletefiles.txt") Then
-                        显示消息框("差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return False
-                    ElseIf 压缩器.检查压缩包中的文件(合并参数.差分包路径, "hdifffiles.txt") Then
-                        合并参数.V2差分包 = False
-                    ElseIf 压缩器.检查压缩包中的文件(合并参数.差分包路径, "hdiffmap.json") Then
-                        合并参数.V2差分包 = True
-                    Else
-                        显示消息框("差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return False
-                    End If
+                    显示消息框("差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
                 End If
             End If
 
@@ -210,34 +204,28 @@ Public Class Form1
                 If Not 语音差分包是否压缩包 Then
                     If File.Exists(Path.Combine(合并参数.语音差分包路径, "manifest")) Then
                         合并参数.Ldiff语音差分包 = True
+                    ElseIf File.Exists(Path.Combine(合并参数.语音差分包路径, "hdifffiles.txt")) Then
+                        合并参数.V2语音差分包 = False
+                    ElseIf File.Exists(Path.Combine(合并参数.语音差分包路径, "hdiffmap.json")) Then
+                        合并参数.V2语音差分包 = True
+                    ElseIf File.Exists(Path.Combine(合并参数.语音差分包路径, "deletefiles.txt")) Then
+                        合并参数.V2语音差分包 = False
                     Else
-                        If Not File.Exists(Path.Combine(合并参数.语音差分包路径, "deletefiles.txt")) Then
-                            显示消息框("语音差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            Return False
-                        ElseIf File.Exists(Path.Combine(合并参数.语音差分包路径, "hdifffiles.txt")) Then
-                            合并参数.V2语音差分包 = False
-                        ElseIf File.Exists(Path.Combine(合并参数.语音差分包路径, "hdiffmap.json")) Then
-                            合并参数.V2语音差分包 = True
-                        Else
-                            显示消息框("语音差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            Return False
-                        End If
+                        显示消息框("语音差分包文件不存在！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return False
                     End If
                 Else
                     If 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "manifest") Then
                         合并参数.Ldiff语音差分包 = True
+                    ElseIf 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "hdifffiles.txt") Then
+                        合并参数.V2语音差分包 = False
+                    ElseIf 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "hdiffmap.json") Then
+                        合并参数.V2语音差分包 = True
+                    ElseIf 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "deletefiles.txt") Then
+                        合并参数.V2语音差分包 = False
                     Else
-                        If Not 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "deletefiles.txt") Then
-                            显示消息框("语音差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            Return False
-                        ElseIf 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "hdifffiles.txt") Then
-                            合并参数.V2语音差分包 = False
-                        ElseIf 压缩器.检查压缩包中的文件(合并参数.语音差分包路径, "hdiffmap.json") Then
-                            合并参数.V2语音差分包 = True
-                        Else
-                            显示消息框("语音差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            Return False
-                        End If
+                        显示消息框("语音差分包文件不存在或不正确！", "错误：", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return False
                     End If
                 End If
             End If
