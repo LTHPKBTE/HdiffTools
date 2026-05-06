@@ -126,7 +126,7 @@ Public Class 差分包合并
             For Each line As String In hdiffFiles
                 Try
                     Dim patchInfo As JsonObject = JsonSerializer.Deserialize(Of JsonObject)(line)
-                    Dim remoteName As String = patchInfo("remoteName").ToString()
+                    Dim remoteName As String = patchInfo("remoteName").GetValue(Of String)().Replace("/", "\")
                     Dim baseName As String = Path.GetFileName(remoteName)
 
                     日志回调($"合并：{baseName}...")
@@ -155,9 +155,9 @@ Public Class 差分包合并
             Dim hdiffFiles As HDiffMap = JsonSerializer.Deserialize(Of HDiffMap)(File.ReadAllText(Path.Combine(差分包目录, "hdiffmap.json")))
             For Each json As HDiffData In hdiffFiles.DiffMap
                 Try
-                    Dim sourceFileName As String = json.SourceFileName
-                    Dim targetFileName As String = json.TargetFileName
-                    Dim patchFileName As String = json.PatchFileName
+                    Dim sourceFileName As String = json.SourceFileName?.Replace("/", "\")
+                    Dim targetFileName As String = json.TargetFileName?.Replace("/", "\")
+                    Dim patchFileName As String = json.PatchFileName?.Replace("/", "\")
 
                     日志回调($"合并：{targetFileName}...")
 
@@ -204,7 +204,7 @@ Public Class 差分包合并
     Private Sub 删除文件(文件路径 As String, 文件列表 As List(Of String))
         For Each df As String In 文件列表
             Try
-                Dim filePath As String = Path.Combine(文件路径, df.Trim())
+                Dim filePath As String = Path.Combine(文件路径, df.Trim().Replace("/", "\"))
                 If File.Exists(filePath) Then
                     File.Delete(filePath)
                     日志回调($"删除：{filePath}")
